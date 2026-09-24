@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>React Form Inspector</title>
+    <link rel="stylesheet" href="../shared/base.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="head">
+      <span class="mark" aria-hidden="true"></span>
+      <h1>Form Inspector</h1>
+      <span class="version muted" id="version"></span>
+    </header>
+
+    <section class="page">
+      <p class="origin mono" id="origin">—</p>
+      <p class="status" id="status" role="status">Checking this page…</p>
+      <button class="primary toggle" id="toggle" disabled>
+        <span id="toggle-label">Start inspecting</span>
+        <kbd id="shortcut"></kbd>
+      </button>
+      <p class="error" id="toggle-error" hidden></p>
+    </section>
+
+    <section class="folder" aria-labelledby="folder-title">
+      <div class="row-head">
+        <h2 class="eyebrow" id="folder-title">Project folder</h2>
+        <button class="link small" id="folder-clear" hidden>Use dev-server paths</button>
+      </div>
+      <p class="hint muted">Where this site's code lives on your computer — the folder with <code>src/</code> in it.</p>
+      <form class="folder-form" id="folder-form">
+        <input type="text" id="folder-input" list="recent-roots" placeholder="C:\Users\you\projects\my-app" spellcheck="false" autocomplete="off" aria-label="Project folder" />
+        <datalist id="recent-roots"></datalist>
+        <button type="submit" id="folder-save">Save</button>
+      </form>
+      <p class="error" id="folder-error" hidden></p>
+      <dl class="paths">
+        <div id="detected-row" hidden>
+          <dt class="muted">Dev server reports</dt>
+          <dd><span class="mono" id="detected"></span> <button class="link small" id="use-detected">Use</button></dd>
+        </div>
+        <div id="opens-row" hidden>
+          <dt class="muted">Files open from</dt>
+          <dd class="mono" id="opens"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="prefs">
+      <label class="pref">
+        <span class="muted">Open in</span>
+        <select id="editor"></select>
+      </label>
+      <label class="pref" id="template-row" hidden>
+        <span class="muted">URL</span>
+        <input type="text" id="template" placeholder="vscode://file{urlPath}:{line}:{column}" spellcheck="false" />
+      </label>
+      <div class="pref">
+        <span class="muted" id="click-label">Click</span>
+        <div class="seg" role="radiogroup" aria-labelledby="click-label">
+          <label><input type="radio" name="click" value="copy" /><span>Copy name</span></label>
+          <label><input type="radio" name="click" value="open" /><span>Open file</span></label>
+        </div>
+      </div>
+      <div class="pref">
+        <span class="muted" id="mode-label">Inspect</span>
+        <div class="seg" role="radiogroup" aria-labelledby="mode-label">
+          <label><input type="radio" name="mode" value="fields" /><span>Fields</span></label>
+          <label><input type="radio" name="mode" value="all" /><span>All elements</span></label>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p class="keys muted"><kbd>P</kbd> pin · <kbd>Ctrl</kbd>+click open · <kbd>Shift</kbd>+click copy · <kbd>Esc</kbd> stop</p>
+      <p><button class="link" id="options">All settings</button> · <button class="link" id="shortcuts">Change shortcut</button></p>
+    </footer>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

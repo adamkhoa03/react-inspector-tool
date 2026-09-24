@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>React Form Inspector — settings</title>
+    <link rel="stylesheet" href="../shared/base.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <header class="head">
+        <span class="mark" aria-hidden="true"></span>
+        <h1>Form Inspector settings</h1>
+      </header>
+
+      <section aria-labelledby="folders-title">
+        <h2 id="folders-title">Project folders</h2>
+        <p class="muted lead">
+          Each site you inspect can point at the folder its code lives in on this computer. Without one, files open at
+          the paths the dev server reports — right when the server runs on this machine, wrong for a teammate's server
+          on the network, Docker or WSL.
+        </p>
+        <table class="folders">
+          <thead>
+            <tr>
+              <th scope="col">Site</th>
+              <th scope="col">Folder on this computer</th>
+              <th scope="col"><span class="sr">Remove</span></th>
+            </tr>
+          </thead>
+          <tbody id="folder-rows"></tbody>
+        </table>
+        <p class="empty muted" id="folders-empty" hidden>No folders yet. Add one below, or paste it in the popup while you are on the site.</p>
+        <form class="add" id="add-form">
+          <input type="text" id="add-origin" placeholder="http://localhost:5173" spellcheck="false" aria-label="Site" />
+          <input type="text" id="add-root" placeholder="C:\Users\you\projects\my-app" spellcheck="false" aria-label="Folder" />
+          <button type="submit">Add</button>
+        </form>
+        <p class="error" id="add-error" hidden></p>
+      </section>
+
+      <section aria-labelledby="editor-title">
+        <h2 id="editor-title">Editor</h2>
+        <label class="field">
+          <span>Open files in</span>
+          <select id="editor"></select>
+        </label>
+        <div id="custom" hidden>
+          <label class="field">
+            <span>URL template</span>
+            <input type="text" id="template" placeholder="vscode://file{urlPath}:{line}:{column}" spellcheck="false" />
+          </label>
+          <p class="muted small">
+            <code>{path}</code> C:/app/src/Form.tsx · <code>{urlPath}</code> the same, always starting with “/” ·
+            <code>{relPath}</code> src/Form.tsx · <code>{line}</code> · <code>{column}</code>
+          </p>
+          <ul class="examples small">
+            <li><span class="muted">VS Code in WSL</span> <code>vscode://vscode-remote/wsl+Ubuntu{urlPath}:{line}:{column}</code> <button class="link" data-template="vscode://vscode-remote/wsl+Ubuntu{urlPath}:{line}:{column}">Use</button></li>
+            <li><span class="muted">IntelliJ IDEA</span> <code>idea://open?file={path}&amp;line={line}</code> <button class="link" data-template="idea://open?file={path}&amp;line={line}">Use</button></li>
+          </ul>
+        </div>
+        <p class="muted small" id="dev-server-note" hidden>
+          Asks the Vite dev server to open the file through its <code>/__open-in-editor</code> endpoint. No browser prompt,
+          but the editor opens on the machine running the server and is picked by Vite (set <code>LAUNCH_EDITOR</code> to choose).
+        </p>
+      </section>
+
+      <section aria-labelledby="behaviour-title">
+        <h2 id="behaviour-title">While inspecting</h2>
+        <div class="field">
+          <span id="click-label">A click on a field</span>
+          <div class="seg" role="radiogroup" aria-labelledby="click-label">
+            <label><input type="radio" name="click" value="copy" /><span>Copies its name</span></label>
+            <label><input type="radio" name="click" value="open" /><span>Opens its file</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span id="mode-label">Highlight</span>
+          <div class="seg" role="radiogroup" aria-labelledby="mode-label">
+            <label><input type="radio" name="mode" value="fields" /><span>Form fields</span></label>
+            <label><input type="radio" name="mode" value="all" /><span>Every element</span></label>
+          </div>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="keep" />
+          <span>Keep inspecting after the page reloads</span>
+        </label>
+        <p class="muted small">
+          Keys: <kbd>P</kbd> pins the tag so you can use its buttons · <kbd>C</kbd> / <kbd>O</kbd> copy or open while
+          pinned · <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+click opens · <kbd>Shift</kbd>+click copies · <kbd>Esc</kbd> unpins, then stops.
+          Start and stop: <kbd id="shortcut">—</kbd> <button class="link" id="shortcuts">change</button>
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-title">
+        <h2 id="privacy-title">What it touches</h2>
+        <p class="muted">
+          It only runs on a tab after you start it there. In that page it reads React's development data and fetches the
+          page's own scripts to find source lines. Nothing is sent anywhere, and what people typed into fields is never
+          copied or stored.
+        </p>
+      </section>
+
+      <p class="saved muted" id="saved" role="status"></p>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>
