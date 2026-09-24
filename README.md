@@ -1,163 +1,163 @@
 # React Form Inspector
 
-Chrome extension để soi form của app React. Khi bạn **hover** vào một field, extension hiện:
+A Chrome extension for inspecting forms in a React app. When you **hover** a field, it shows:
 
-- **tên field**: `email`, `password`, `terms`…
-- **component** chứa field đó, ví dụ `LoginPane`
-- **dòng khai báo** field, ví dụ `src/features/auth-dialog/ui/LoginPane.tsx:67`
+- the **field name**: `email`, `password`, `terms`…
+- the **component** the field belongs to, e.g. `LoginPane`
+- the **line that declares** the field, e.g. `src/features/auth-dialog/ui/LoginPane.tsx:67`
 
-Khi **click** vào field, bạn copy được tên field hoặc mở thẳng file đó trong VS Code (hoặc Cursor, WebStorm…).
+**Click** a field to copy its name, or to open that exact line in VS Code (or Cursor, WebStorm…).
 
-Extension viết bằng JavaScript thuần, không cần build. Chrome đọc trực tiếp `manifest.json` cùng các file JS/HTML/CSS trong folder này.
+The extension is plain JavaScript with no build step: Chrome reads `manifest.json` and the JS/HTML/CSS files in this folder directly.
 
 ---
 
-## Cài đặt
+## Install
 
-1. Mở `chrome://extensions`.
-2. Bật **Developer mode** ở góc phải trên.
-3. Bấm **Load unpacked** rồi chọn folder `react-form-inspector` này.
-4. (Tuỳ chọn) Ghim icon extension lên thanh công cụ.
+1. Open `chrome://extensions`.
+2. Turn on **Developer mode** (top right).
+3. Click **Load unpacked** and pick this `react-form-inspector` folder.
+4. (Optional) Pin the extension icon to the toolbar.
 
-**Chia sẻ cho người khác:** gửi họ cả folder, dạng file zip hoặc qua git. Họ làm lại đúng 4 bước trên. Mỗi lần bạn sửa code, bấm nút ↻ của extension trong `chrome://extensions`, rồi tải lại trang đang soi.
+**Sharing it with others:** send them the whole folder, as a zip or through git, and have them follow the same 4 steps. Whenever you change the code, press the extension's ↻ button in `chrome://extensions`, then reload the page you are inspecting.
 
-## Cách dùng
+## Usage
 
-1. Mở app React đang chạy ở chế độ dev, ví dụ `http://localhost:5173`.
-2. Bật inspector theo một trong hai cách:
-   - bấm icon extension, chọn **Start inspecting**, hoặc
-   - nhấn **Alt+Shift+F**. Muốn đổi phím thì vào `chrome://extensions/shortcuts`.
-3. Hover vào field, tag thông tin sẽ hiện ngay dưới field.
+1. Open a React app running in development mode, e.g. `http://localhost:5173`.
+2. Turn the inspector on, either way:
+   - click the extension icon and choose **Start inspecting**, or
+   - press **Alt+Shift+F**. To change the key, go to `chrome://extensions/shortcuts`.
+3. Hover a field; its tag appears right below it.
 
-| Thao tác | Kết quả |
+| Action | Result |
 |---|---|
-| Click | Copy tên field. Field không có tên thì copy `path:line`. Có thể đổi thành "mở file" trong popup. |
-| `Ctrl`/`⌘` + click | Mở file ở đúng dòng trong editor |
-| `Shift` + click | Copy tên field |
-| `P` | **Pin** tag vào field đang hover, để bấm được các nút trong tag (copy component, copy path, copy tất cả, component stack). Nhấn `P` lần nữa để bỏ pin. |
-| `C` / `O` (khi đang pin) | Copy tên / mở file |
-| `Esc` | Bỏ pin. Nếu đang không pin thì tắt inspector. |
+| Click | Copies the field name. A field without a name copies its `path:line` instead. Can be switched to "open file" in the popup. |
+| `Ctrl`/`⌘` + click | Opens the file at that line in your editor |
+| `Shift` + click | Copies the field name |
+| `P` | **Pins** the tag to the hovered field so you can use its buttons (copy component, copy path, copy all, component stack). Press `P` again to unpin. |
+| `C` / `O` (while pinned) | Copy the name / open the file |
+| `Esc` | Unpins. If nothing is pinned, turns the inspector off. |
 
-Thanh nhỏ ở góc phải dưới có nút chuyển giữa hai mode:
+The small bar in the bottom-right corner switches between two modes:
 
-- **Fields**: chỉ bắt field của form.
-- **All**: bắt mọi phần tử, kèm component và dòng code của phần tử đó.
+- **Fields**: only form fields are picked up.
+- **All**: every element, with its component and line of code.
 
-Trong lúc inspector đang bật, click của bạn **không đi xuống trang**. Nhờ vậy input không bị focus, Select không bị mở, dialog cũng không tự đóng. Nhấn `Esc` để trả lại trang như bình thường.
+While the inspector is on, your clicks **do not reach the page**: inputs don't take focus, selects don't open, and dialogs don't close. Press `Esc` to get the page back.
 
 ## Project folder ("source")
 
-Mỗi site có thể gắn với **thư mục chứa code trên máy của bạn**, tức là folder có `src/` bên trong, ví dụ `C:\work\jira-app\apps\web`. Cách gắn:
+Each site can point at **the folder its code lives in on your computer**, the one with `src/` inside, e.g. `C:\work\jira-app\apps\web`. To set it:
 
-1. Mở site đó.
-2. Bấm icon extension, paste đường dẫn vào ô **Project folder** rồi bấm **Save**.
+1. Open the site.
+2. Click the extension icon, paste the path into **Project folder** and press **Save**.
 
-Từ lúc đó, mọi đường dẫn đều được tính lại theo thư mục này, nên nút "Open in VS Code" mở đúng file trên máy bạn.
+From then on every path is rebuilt inside that folder, so "Open in VS Code" opens the right file on your machine.
 
-**Khi nào cần paste?**
+**When do you need to paste one?**
 
-- **Chạy dev server trên chính máy mình:** thường không cần. Vite ghi sẵn đường dẫn tuyệt đối vào code (`_jsxFileName`), extension tự đọc được, và popup sẽ hiện dòng "Dev server reports: …".
-- **Mở dev server của đồng nghiệp qua mạng LAN** (`http://192.168.x.x:5173`): đường dẫn server báo về là đường dẫn trên máy **họ**. Paste thư mục checkout của **bạn** vào.
-- **Dev server chạy trong Docker hoặc trên máy khác:** giống trường hợp trên.
-- **WSL:** paste thư mục, hoặc chọn **Custom URL template** với
+- **The dev server runs on your own machine:** usually not. Vite writes the absolute path into the compiled code (`_jsxFileName`) and the extension reads it; the popup shows it as "Dev server reports: …" so you can check.
+- **You open a teammate's dev server over the LAN** (`http://192.168.x.x:5173`): the paths the server reports are paths on **their** machine. Paste the folder of **your** checkout.
+- **The dev server runs in Docker or on another machine:** same as above.
+- **WSL:** paste the folder, or pick **Custom URL template** with
   `vscode://vscode-remote/wsl+Ubuntu{urlPath}:{line}:{column}`
-- **Popup báo chỉ có đường dẫn tương đối:** bắt buộc phải paste.
+- **The popup says only a relative path is known:** you must paste one.
 
-Danh sách thư mục theo từng site được quản lý ở **All settings** (trang options).
+The per-site folder list is managed under **All settings** (the options page).
 
 ## Editor
 
-Popup có mục **Open in** với các lựa chọn: VS Code, VS Code Insiders, Cursor, Windsurf, Zed, WebStorm, Custom URL template hoặc Vite dev server.
+The popup's **Open in** menu offers VS Code, VS Code Insiders, Cursor, Windsurf, Zed, WebStorm, Custom URL template and Vite dev server.
 
-- **Lần đầu mở file**, Chrome sẽ hỏi *"Open Visual Studio Code?"*. Tick **Always allow…** thì những lần sau không hỏi nữa.
-- **Custom URL template** dùng được các biến sau:
+- **The first time you open a file**, Chrome asks *"Open Visual Studio Code?"*. Tick **Always allow…** and it won't ask again.
+- **Custom URL template** accepts these placeholders:
 
-  | Biến | Giá trị |
+  | Placeholder | Value |
   |---|---|
-  | `{path}` | đường dẫn tuyệt đối, ví dụ `C:/app/src/Form.tsx` |
-  | `{urlPath}` | như `{path}` nhưng luôn bắt đầu bằng `/` |
-  | `{relPath}` | đường dẫn tương đối, ví dụ `src/Form.tsx` |
-  | `{line}`, `{column}` | dòng và cột |
+  | `{path}` | absolute path, e.g. `C:/app/src/Form.tsx` |
+  | `{urlPath}` | same as `{path}`, but always starting with `/` |
+  | `{relPath}` | relative path, e.g. `src/Form.tsx` |
+  | `{line}`, `{column}` | line and column |
 
-- **Vite dev server** gọi endpoint `/__open-in-editor` của Vite. Chrome không hỏi gì, nhưng editor được mở trên **máy đang chạy dev server** và do Vite tự chọn (đặt biến `LAUNCH_EDITOR` nếu muốn chỉ định editor).
+- **Vite dev server** calls Vite's `/__open-in-editor` endpoint. Chrome asks nothing, but the editor opens on **the machine running the dev server** and is chosen by Vite (set the `LAUNCH_EDITOR` environment variable to pick one).
 
-## Cách hoạt động
+## How it works
 
-Phần này dành cho ai muốn sửa extension.
+This section is for anyone who wants to change the extension.
 
-**1. Chỉ chạy khi bạn bật.** Lúc bạn bấm popup hoặc nhấn phím tắt, Chrome cấp quyền `activeTab` cho đúng tab đó. Background (`background.js`) inject 4 file trong `page/` vào **world của trang**, tức là cùng môi trường JS với React. Chỉ ở đó mới đọc được dữ liệu nội bộ của React. Cách này không cần quyền "đọc mọi trang web".
+**1. It runs only when you turn it on.** When you click the popup or press the shortcut, Chrome grants `activeTab` for that tab only. The background worker (`background.js`) then injects the 4 files in `page/` into **the page's own world**, the same JS environment React runs in; that is the only place React's internal data can be read. So the extension never needs permission to "read all websites".
 
-**2. Từ DOM tới fiber** (`page/fiber.js`). React gắn fiber vào mỗi DOM node qua một key có dạng `__reactFiber$…`. Fiber có các liên kết sau:
-- `return`: fiber cha
-- `memoizedProps`: props
-- `_debugOwner`: component đã render ra nó
-- `_debugStack`: stack trace lúc JSX được gọi. Có từ React 19; ở React ≤18 thay bằng `_debugSource`.
+**2. From DOM to fiber** (`page/fiber.js`). React attaches a fiber to every DOM node under a key like `__reactFiber$…`. A fiber links to:
+- `return`: the parent fiber
+- `memoizedProps`: its props
+- `_debugOwner`: the component that rendered it
+- `_debugStack`: the stack trace from when the JSX ran. This exists since React 19; React ≤18 has `_debugSource` instead.
 
-**3. Tên field.** Extension đi ngược từ phần tử lên các fiber cha để tìm prop `name`. Có hai giới hạn:
-- Chỉ nhận `name` của component render **đúng một field**. Nhờ vậy `<Icon name="eye">` không bị nhận nhầm.
-- Dừng khi gặp một tổ tiên chứa từ 2 field trở lên, vì từ đó trở lên là của form chứ không còn là của field.
+**3. The field name.** The extension walks up from the element through the parent fibers looking for a `name` prop, with two limits:
+- It only accepts a `name` from a component that renders **exactly one field**, so `<Icon name="eye">` is never mistaken for one.
+- It stops at the first ancestor that contains two or more fields: from there up, things belong to the form, not to this field.
 
-Cách này bắt được `register('email')`, `<Controller name="password">`, kể cả khi tên không xuất hiện trên DOM. Ví dụ `terms` là Radix checkbox, tên chỉ nằm ở Controller.
+This catches `register('email')` and `<Controller name="password">`, even when the name never reaches the DOM. For example `terms` is a Radix checkbox whose name exists only on the Controller.
 
-**4. Dòng khai báo.** Lấy fiber *ngoài cùng* thoả một trong hai điều kiện:
-- còn mang đúng tên đó, hoặc
-- còn truyền xuống cùng một prop cho field (`value`, `onChange`, `checked`, `placeholder`…).
+**4. The declaring line.** It takes the *outermost* fiber that either:
+- still carries the same name, or
+- still passes one of the field's props down (`value`, `onChange`, `checked`, `placeholder`…).
 
-Nhờ vậy `<Input {...register('email')} />` trỏ về `LoginPane.tsx`, chứ không lọt vào bên trong `Input.tsx`.
+That is why `<Input {...register('email')} />` points at `LoginPane.tsx` rather than into `Input.tsx`.
 
-**5. Component chứa field.** Stack trong `_debugStack` có dạng:
+**5. The owning component.** The stack in `_debugStack` reads:
 
 ```
-jsxDEV → nơi viết JSX → … → hàm component đang render → react_stack_bottom_frame
+jsxDEV → where the JSX was written → … → the component function rendering → react_stack_bottom_frame
 ```
 
-Component chứa field là owner đầu tiên được định nghĩa **cùng file** với dòng khai báo. Quy tắc này xử lý đúng các render prop như `<Field>{(p) => <Input …/>}</Field>`: kết quả là `LoginPane`, không phải `Field`.
+The owning component is the first owner **defined in the same file** as the declaring line. This handles render props such as `<Field>{(p) => <Input …/>}</Field>` correctly: the answer is `LoginPane`, not `Field`.
 
-**6. Số dòng thật** (`page/source.js`). Stack trỏ vào code mà Vite đã biên dịch. Extension fetch lại module đó (cùng origin), đọc source map inline (base64 VLQ), rồi đổi ra dòng và cột trong file `.tsx` gốc.
+**6. The real line number** (`page/source.js`). The stack points into the code Vite compiled. The extension fetches that module again (same origin), reads its inline source map (base64 VLQ) and maps the position back to the line and column in the original `.tsx` file.
 
-**7. Giao diện** (`page/overlay.js`). Toàn bộ nằm trong Shadow DOM, nên CSS của trang không ảnh hưởng tới nó. Nội dung được dựng bằng DOM API, không dùng `innerHTML`.
+**7. The UI** (`page/overlay.js`). Everything lives in a Shadow DOM, so the page's CSS can't affect it, and it is built with DOM APIs, never `innerHTML`.
 
-Ngoài ra còn có `page/inspector.js` (bắt chuột/phím, copy, mở editor) và `page/bridge.js` (báo trạng thái để hiện badge "ON").
+On top of those, `page/inspector.js` handles the pointer, the keys, copying and opening the editor, and `page/bridge.js` reports on/off so the badge can show "ON".
 
-Trong DevTools console, bạn có thể gọi:
+In the DevTools console you can call:
 
 ```js
-await __REACT_FORM_INSPECTOR__.inspect($0) // $0 = phần tử đang chọn trong tab Elements
+await __REACT_FORM_INSPECTOR__.inspect($0) // $0 = the element selected in the Elements tab
 ```
 
-## Giới hạn
+## Limitations
 
-- **Cần build development.** Ở build production, React không giữ thông tin nguồn nên chỉ còn tên (có khi đã bị minify).
-- **React 19.0** chưa có `_debugStack`. React ≤18 (`_debugSource`) và React ≥19.1 thì chạy được.
-- **Sau khi Vite hot-reload một file**, các phần tử đã mount từ trước có thể lệch dòng. Tag sẽ ghi "edited, reload for exact line"; tải lại trang là hết.
-- **Webpack / Next.js:** tìm được file nhưng số dòng có thể chỉ gần đúng. Extension được viết chủ yếu cho Vite.
-- **iframe** (ví dụ Storybook): chỉ soi được trang chính. Với Storybook, mở thẳng `iframe.html?id=…`.
-- **Native `<dialog>` mở bằng `showModal()`** làm mọi thứ ngoài dialog thành inert. Tag vẫn hiện nhưng không bấm được nút; các phím `C`, `O`, `Esc` vẫn dùng được.
-- **Trang có hộp "Leave site?"** (`beforeunload`) có thể bật hộp này khi bạn mở editor bằng link `vscode://`. Gặp trường hợp này thì chọn editor "Vite dev server".
+- **A development build is required.** In production builds React keeps no source information, so only names are left (and they may be minified).
+- **React 19.0** has no `_debugStack` yet. React ≤18 (`_debugSource`) and React ≥19.1 work.
+- **After Vite hot-reloads a file**, elements mounted before the update can be a few lines off. The tag says "edited, reload for exact line"; reloading the page fixes it.
+- **Webpack / Next.js:** the file is found, but the line may only be approximate. The extension is written mainly for Vite.
+- **iframes** (e.g. Storybook): only the top page is inspected. For Storybook, open `iframe.html?id=…` directly.
+- **A native `<dialog>` opened with `showModal()`** makes everything outside it inert. The tag still shows but its buttons can't be clicked; the `C`, `O` and `Esc` keys still work.
+- **Pages with a "Leave site?" prompt** (`beforeunload`) may show it when a `vscode://` link opens the editor. If that happens, choose the "Vite dev server" editor.
 
-## Xử lý sự cố
+## Troubleshooting
 
-- **"Chrome does not allow extensions on its own pages":** các trang `chrome://` và Chrome Web Store không cho extension chạy.
-- **Trang `file://`:** trong `chrome://extensions`, mở chi tiết extension và bật "Allow access to file URLs".
-- **"React not found on this page":** app chưa render xong, hoặc không phải React.
-- **Mở file mà không có gì xảy ra:** kiểm tra lại editor đã chọn. Nếu lỡ bấm "Cancel" ở hộp thoại của Chrome, thử lại rồi chọn "Open".
-- **Đường dẫn sai máy:** paste lại Project folder trong popup.
+- **"Chrome does not allow extensions on its own pages":** `chrome://` pages and the Chrome Web Store don't allow extensions.
+- **`file://` pages:** in `chrome://extensions`, open the extension's details and turn on "Allow access to file URLs".
+- **"React not found on this page":** the app hasn't finished rendering, or it isn't React.
+- **Opening a file does nothing:** check the selected editor. If you pressed "Cancel" in Chrome's prompt, try again and choose "Open".
+- **Paths from the wrong machine:** paste the Project folder again in the popup.
 
-## Cấu trúc
+## Layout
 
 ```
-manifest.json        khai báo extension (MV3), quyền, phím tắt
-background.js        bật/tắt, inject script, badge, tự bật lại sau khi reload
-shared/settings.js   cài đặt (thư mục theo site, editor…) dùng chung
-shared/base.css      màu và control dùng chung cho popup/options
-page/fiber.js        đọc fiber: tên field, dòng khai báo, component
-page/source.js       stack → source map → file:line, dựng URL mở editor
-page/overlay.js      giao diện trong trang (khung, tag, thanh trạng thái)
-page/inspector.js    điều khiển: chuột, phím, copy, mở editor
-page/bridge.js       báo trạng thái bật/tắt cho badge
-popup/               popup khi bấm icon
-options/             trang "All settings"
-icons/               icon 16/32/48/128
+manifest.json        the extension declaration (MV3), permissions, shortcut
+background.js        on/off, script injection, badge, turning back on after a reload
+shared/settings.js   settings (folder per site, editor…) shared by every part
+shared/base.css      colours and controls shared by the popup and options page
+page/fiber.js        reads fibers: field name, declaring line, component
+page/source.js       stack → source map → file:line, builds the editor URL
+page/overlay.js      the on-page UI (brackets, tag, status bar)
+page/inspector.js    the controller: pointer, keys, copy, open in editor
+page/bridge.js       reports on/off for the badge
+popup/               the popup behind the toolbar icon
+options/             the "All settings" page
+icons/               icons at 16/32/48/128
 ```
 
-Dữ liệu trong ô input không bao giờ bị copy hay gửi đi đâu. Extension chỉ fetch các script của chính trang đang soi, để đọc source map.
+What people type into fields is never copied or sent anywhere. The only network requests the extension makes are for the inspected page's own scripts, to read their source maps.
