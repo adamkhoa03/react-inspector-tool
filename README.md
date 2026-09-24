@@ -1,6 +1,9 @@
 # React Form Inspector
 
 A Chrome extension for inspecting forms in a React app. When you **hover** a field, it shows:
+<img width="360" height="524" alt="image" src="https://github.com/user-attachments/assets/ca5ce3fd-28c4-4fb2-9ba2-732081b5cd4d" />
+<img width="659" height="582" alt="image" src="https://github.com/user-attachments/assets/b3754922-de07-48bd-8c54-6f1e071f0c51" />
+
 
 - the **field name**: `email`, `password`, `terms`…
 - the **component** the field belongs to, e.g. `LoginPane`
